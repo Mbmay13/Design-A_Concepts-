@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AERO_DEFI // FLIGHT_DECK_MECHANIC</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-dim": "#131313",
+              "surface-tint": "#ffba43",
+              "on-primary-container": "#6a4700",
+              "on-surface-variant": "#d7c4ac",
+              "tertiary-fixed": "#72ff70",
+              "error-container": "#93000a",
+              "outline": "#9f8e78",
+              "surface-container-lowest": "#0e0e0e",
+              "error": "#ffb4ab",
+              "primary": "#ffd597",
+              "secondary": "#4ce346",
+              "primary-container": "#ffb000",
+              "on-primary-fixed-variant": "#614000",
+              "outline-variant": "#524533",
+              "on-secondary": "#003a03",
+              "on-secondary-container": "#003f03",
+              "on-primary-fixed": "#281800",
+              "secondary-fixed-dim": "#4ce346",
+              "secondary-fixed": "#75ff68",
+              "primary-fixed": "#ffddaf",
+              "on-error": "#690005",
+              "on-tertiary-fixed-variant": "#00530e",
+              "surface-container-low": "#1c1b1b",
+              "tertiary-fixed-dim": "#00e639",
+              "primary-fixed-dim": "#ffba43",
+              "secondary-container": "#04b71a",
+              "on-tertiary-fixed": "#002203",
+              "on-secondary-fixed": "#002201",
+              "inverse-primary": "#805600",
+              "tertiary-container": "#00de37",
+              "surface-container-highest": "#353534",
+              "surface-container": "#201f1f",
+              "surface": "#131313",
+              "on-surface": "#e5e2e1",
+              "on-primary": "#432c00",
+              "on-tertiary": "#003907",
+              "on-error-container": "#ffdad6",
+              "surface-container-high": "#2a2a2a",
+              "tertiary": "#00fe41",
+              "inverse-on-surface": "#313030",
+              "surface-bright": "#3a3939",
+              "background": "#131313",
+              "surface-variant": "#353534",
+              "on-tertiary-container": "#005b10",
+              "on-secondary-fixed-variant": "#005306",
+              "on-background": "#e5e2e1",
+              "inverse-surface": "#e5e2e1"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Space Grotesk"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #131313;
+            background-image: radial-gradient(#1c1b1b 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 186, 67, 0.03);
+            position: absolute;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .crt-glow {
+            text-shadow: 0 0 8px rgba(255, 186, 67, 0.6);
+        }
+        .crt-glow-green {
+            text-shadow: 0 0 8px rgba(76, 227, 70, 0.6);
+        }
+        .pixel-border {
+            box-shadow: 4px 4px 0px 0px #2a2a2a;
+        }
+        .active-inset {
+            box-shadow: inset 4px 4px 0px 0px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="font-body text-on-surface selection:bg-primary selection:text-on-primary">
+<!-- TOP APP BAR -->
+<header class="bg-[#131313] border-b-2 border-[#9f8e78] shadow-[0_0_15px_rgba(255,186,67,0.15)] sticky top-0 z-50">
+<nav class="flex justify-between items-center w-full px-6 h-16 max-w-7xl mx-auto">
+<div class="text-xl font-black text-[#ffba43] tracking-widest font-headline">
+                AERO_DEFI
+            </div>
+<div class="hidden md:flex gap-8">
+<a class="font-headline uppercase tracking-tighter font-bold text-sm text-[#ffba43] border-b-2 border-[#ffba43] pb-1 transition-none" href="#">SWAP</a>
+<a class="font-headline uppercase tracking-tighter font-bold text-sm text-[#ffd597] opacity-70 hover:text-[#4ce346] hover:bg-[#201f1f] transition-none" href="#">LIQUIDITY</a>
+<a class="font-headline uppercase tracking-tighter font-bold text-sm text-[#ffd597] opacity-70 hover:text-[#4ce346] hover:bg-[#201f1f] transition-none" href="#">VOTE</a>
+<a class="font-headline uppercase tracking-tighter font-bold text-sm text-[#ffd597] opacity-70 hover:text-[#4ce346] hover:bg-[#201f1f] transition-none" href="#">LOCK</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-[#ffd597] hover:text-[#4ce346] transition-none">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="bg-primary-container text-on-primary-fixed px-4 py-1 font-bold border-r-2 border-b-2 border-outline active:border-0 active:translate-y-0.5 active:translate-x-0.5 transition-none flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="account_balance_wallet">account_balance_wallet</span>
+                    CONNECT_GEAR
+                </button>
+</div>
+</nav>
+</header>
+<main class="max-w-7xl mx-auto px-6 py-12">
+<!-- HERO SECTION: FLIGHT DECK DISPLAY -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12">
+<div class="lg:col-span-8 bg-surface-container border-4 border-outline p-8 relative overflow-hidden">
+<div class="scanline top-10"></div>
+<div class="flex justify-between items-start mb-12">
+<div>
+<div class="text-secondary font-bold text-xs tracking-[0.3em] mb-2 uppercase">System Status: Nominal</div>
+<h1 class="text-5xl md:text-7xl font-black text-primary font-headline crt-glow tracking-tighter mb-4">FLIGHT_DECK_V1</h1>
+<p class="text-outline max-w-md uppercase text-xs leading-relaxed tracking-widest">Advanced propulsion protocol for decentralized liquidity. Piloting the future of aerospace assets on-chain.</p>
+</div>
+<div class="bg-surface-container-high border-2 border-outline-variant p-4 text-center">
+<div class="text-[10px] text-outline mb-1">ALTITUDE (TVL)</div>
+<div class="text-2xl font-bold text-tertiary crt-glow-green tabular-nums">$42.8M</div>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+<div class="border-t-2 border-outline-variant pt-4">
+<div class="text-[10px] text-outline mb-1 uppercase">Velocity (24h)</div>
+<div class="text-xl font-bold text-primary tabular-nums">+12.4%</div>
+</div>
+<div class="border-t-2 border-outline-variant pt-4">
+<div class="text-[10px] text-outline mb-1 uppercase">Fuel (Gas)</div>
+<div class="text-xl font-bold text-secondary tabular-nums">18 GWEI</div>
+</div>
+<div class="border-t-2 border-outline-variant pt-4">
+<div class="text-[10px] text-outline mb-1 uppercase">Coordinates</div>
+<div class="text-xl font-bold text-primary tabular-nums">0x...AERO</div>
+</div>
+<div class="border-t-2 border-outline-variant pt-4">
+<div class="text-[10px] text-outline mb-1 uppercase">Uptime</div>
+<div class="text-xl font-bold text-tertiary tabular-nums">99.9%</div>
+</div>
+</div>
+<div class="absolute bottom-4 right-4 opacity-20">
+<span class="material-symbols-outlined text-8xl" data-icon="rocket_launch">rocket_launch</span>
+</div>
+</div>
+<!-- ASYMMETRIC HUD PANEL -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<div class="bg-surface-container-high border-2 border-outline p-6 flex-1 relative">
+<div class="text-xs text-secondary font-bold mb-4 flex items-center gap-2">
+<span class="w-2 h-2 bg-secondary animate-pulse"></span>
+                        LIVE_RADAR_FEED
+                    </div>
+<div class="aspect-square w-full bg-surface-container-lowest border border-outline-variant flex items-center justify-center relative">
+<div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle, #4ce346 1px, transparent 1px); background-size: 20px 20px;"></div>
+<div class="w-3/4 h-3/4 border border-secondary/30 rounded-full flex items-center justify-center">
+<div class="w-1/2 h-1/2 border border-secondary/20 rounded-full"></div>
+</div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[2px] h-full bg-secondary/10"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[2px] w-full bg-secondary/10"></div>
+<img class="absolute w-24 h-24 object-cover border-2 border-secondary p-1 grayscale contrast-150" data-alt="Abstract block representation of blockchain network nodes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB744M615EQ2_WBjrekwVZYvfXA3zx0xWcgz9ZRZVCf6ezKVeXhTAzH2_y_2sJDLMxwNydhesZCHf4BpmmEofTw7GUJeElDyCddXu0F221yS_QIGhvu0JHuHc33L7Kspn3KwPgn9RpY6F4XzQZ3hGNKpv-D7SkzQSQssTs6jrIe1lzvKnn_D1VaNoAjljN6bhoKcxj4UKl3d5itPa24tHI48XXQhhElHos-Pdska4JM_IKRblqBJqZiEz-q5gPPhTPLK8JDHhQ2U_8"/>
+</div>
+</div>
+</div>
+</section>
+<!-- SWAP MODULE & STATS GRID -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+<!-- SWAP MODULE (THE INSTRUMENT) -->
+<div class="lg:col-span-1 bg-surface-container border-4 border-outline p-6">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline font-black text-primary tracking-tighter text-xl">EXECUTE_SWAP</h2>
+<span class="material-symbols-outlined text-outline" data-icon="sync_alt">sync_alt</span>
+</div>
+<div class="space-y-4">
+<!-- FROM INPUT -->
+<div class="bg-surface-container-lowest border-2 border-outline-variant p-4">
+<div class="flex justify-between text-[10px] text-outline mb-2">
+<span>PAY_LOAD</span>
+<span>MAX_CAPACITY: 420.00</span>
+</div>
+<div class="flex justify-between items-center">
+<input class="bg-transparent border-none text-3xl font-bold text-primary tabular-nums focus:ring-0 w-1/2 p-0" type="text" value="1.00"/>
+<button class="bg-surface-container-high border border-outline px-3 py-1 text-xs font-bold hover:bg-surface-bright transition-none">
+                                ETH
+                            </button>
+</div>
+</div>
+<div class="flex justify-center -my-2 relative z-10">
+<button class="bg-outline text-surface border-4 border-surface-container p-2 hover:bg-primary transition-none">
+<span class="material-symbols-outlined font-bold" data-icon="south">south</span>
+</button>
+</div>
+<!-- TO INPUT -->
+<div class="bg-surface-container-lowest border-2 border-outline-variant p-4">
+<div class="flex justify-between text-[10px] text-outline mb-2">
+<span>RECOVERY_LOAD</span>
+<span>EST_SLIPPAGE: 0.05%</span>
+</div>
+<div class="flex justify-between items-center">
+<input class="bg-transparent border-none text-3xl font-bold text-secondary tabular-nums focus:ring-0 w-2/3 p-0" readonly="" type="text" value="2,450.80"/>
+<button class="bg-surface-container-high border border-outline px-3 py-1 text-xs font-bold hover:bg-surface-bright transition-none">
+                                AERO
+                            </button>
+</div>
+</div>
+<div class="py-4 space-y-2">
+<div class="flex justify-between text-[10px] text-outline uppercase">
+<span>Exchange Rate</span>
+<span class="text-on-surface">1 ETH = 2,450.80 AERO</span>
+</div>
+<div class="flex justify-between text-[10px] text-outline uppercase">
+<span>Protocol Fee</span>
+<span class="text-on-surface">0.002 ETH</span>
+</div>
+</div>
+<button class="w-full bg-primary-container text-on-primary-fixed font-black py-4 text-lg border-b-4 border-r-4 border-on-primary-fixed-variant active:border-0 active:translate-y-1 active:translate-x-1 transition-none uppercase tracking-widest">
+                        Initiate_Ignition
+                    </button>
+</div>
+</div>
+<!-- MARKET STATS TERMINAL -->
+<div class="lg:col-span-2 space-y-6">
+<div class="bg-surface-container border-2 border-outline overflow-hidden">
+<div class="bg-surface-container-highest px-4 py-2 flex justify-between items-center border-b-2 border-outline">
+<span class="text-xs font-bold text-primary tracking-widest">TRANSACTION_LOGS_STREAM</span>
+<div class="flex gap-2">
+<div class="w-2 h-2 bg-error"></div>
+<div class="w-2 h-2 bg-primary"></div>
+<div class="w-2 h-2 bg-secondary"></div>
+</div>
+</div>
+<div class="p-0 overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-[10px] text-outline uppercase tracking-widest">
+<th class="p-4 border-b border-outline-variant">Timestamp</th>
+<th class="p-4 border-b border-outline-variant">Protocol</th>
+<th class="p-4 border-b border-outline-variant">Action</th>
+<th class="p-4 border-b border-outline-variant text-right">Magnitude</th>
+<th class="p-4 border-b border-outline-variant text-right">Status</th>
+</tr>
+</thead>
+<tbody class="font-headline text-xs">
+<tr class="hover:bg-surface-container-high border-b border-outline-variant/30">
+<td class="p-4 tabular-nums opacity-60">12:44:02.01</td>
+<td class="p-4 font-bold">ORBIT_LQD</td>
+<td class="p-4 text-secondary">DEPOSIT</td>
+<td class="p-4 text-right tabular-nums">14.50 ETH</td>
+<td class="p-4 text-right text-tertiary">CONFIRMED</td>
+</tr>
+<tr class="hover:bg-surface-container-high border-b border-outline-variant/30">
+<td class="p-4 tabular-nums opacity-60">12:43:58.88</td>
+<td class="p-4 font-bold">AERO_SWP</td>
+<td class="p-4 text-primary">SWAP</td>
+<td class="p-4 text-right tabular-nums">1,200 USDC</td>
+<td class="p-4 text-right text-tertiary">CONFIRMED</td>
+</tr>
+<tr class="hover:bg-surface-container-high border-b border-outline-variant/30">
+<td class="p-4 tabular-nums opacity-60">12:43:45.12</td>
+<td class="p-4 font-bold">RE_LOCK</td>
+<td class="p-4 text-error">WITHDRAW</td>
+<td class="p-4 text-right tabular-nums">5.00 ETH</td>
+<td class="p-4 text-right text-tertiary">CONFIRMED</td>
+</tr>
+<tr class="hover:bg-surface-container-high">
+<td class="p-4 tabular-nums opacity-60">12:43:22.95</td>
+<td class="p-4 font-bold">ORBIT_LQD</td>
+<td class="p-4 text-secondary">STAKE</td>
+<td class="p-4 text-right tabular-nums">22.10 ETH</td>
+<td class="p-4 text-right text-tertiary">CONFIRMED</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- INFO CARDS BENTO -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-surface-container-low border-2 border-outline-variant p-6 group hover:border-primary transition-none">
+<div class="flex justify-between mb-4">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="shield">shield</span>
+<span class="text-[10px] text-outline font-mono">CODE_AUDIT_PASS</span>
+</div>
+<h3 class="text-xl font-bold mb-2 uppercase">Reinforced Security</h3>
+<p class="text-xs text-outline leading-relaxed">Multi-signature authentication and circuit-breaker logic integrated at the kernel level. Your assets are secured by aerospace-grade protocols.</p>
+</div>
+<div class="bg-surface-container-low border-2 border-outline-variant p-6 group hover:border-secondary transition-none">
+<div class="flex justify-between mb-4">
+<span class="material-symbols-outlined text-secondary text-3xl" data-icon="auto_graph">auto_graph</span>
+<span class="text-[10px] text-outline font-mono">AUTO_YIELD_OPTIM</span>
+</div>
+<h3 class="text-xl font-bold mb-2 uppercase">Yield Velocity</h3>
+<p class="text-xs text-outline leading-relaxed">Automated rebalancing algorithms ensure your capital remains in the highest velocity pools, maximizing propulsion with zero manual input.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- FOOTER -->
+<footer class="bg-[#131313] border-t-2 border-[#9f8e78] mt-24">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full px-8 py-8 max-w-7xl mx-auto">
+<div class="flex flex-col gap-2">
+<div class="text-[#4ce346] font-bold font-headline text-lg">AERO_DEFI</div>
+<div class="font-['Space_Grotesk'] text-[10px] tracking-widest uppercase text-[#9f8e78]">©2024 FLIGHT_DECK_MECHANIC_V1.0.4</div>
+</div>
+<div class="flex flex-col gap-2">
+<div class="font-['Space_Grotesk'] text-[10px] tracking-widest uppercase text-[#4ce346]">RESOURCES</div>
+<a class="font-['Space_Grotesk'] text-[10px] tracking-widest uppercase text-[#9f8e78] hover:text-[#00fe41] transition-none" href="#">TERMINAL</a>
+<a class="font-['Space_Grotesk'] text-[10px] tracking-widest uppercase text-[#9f8e78] hover:text-[#00fe41] transition-none" href="#">DOCS</a>
+</div>
+<div class="flex flex-col gap-2">
+<div class="font-['Space_Grotesk'] text-[10px] tracking-widest uppercase text-[#4ce346]">COMMUNITY</div>
+<a class="font-['Space_Grotesk'] text-[10px] tracking-widest uppercase text-[#9f8e78] hover:text-[#00fe41] transition-none" href="#">DISPATCH_X</a>
+<a class="font-['Space_Grotesk'] text-[10px] tracking-widest uppercase text-[#9f8e78] hover:text-[#00fe41] transition-none" href="#">COMMS_CHANNEL</a>
+</div>
+<div class="flex flex-col gap-2">
+<div class="font-['Space_Grotesk'] text-[10px] tracking-widest uppercase text-[#4ce346]">SYSTEM</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-secondary"></span>
+<span class="font-['Space_Grotesk'] text-[10px] tracking-widest uppercase text-[#4ce346]">STATUS_OK</span>
+</div>
+<div class="text-[10px] text-outline font-mono mt-1">NODE_ID: 77-ALPHA-9</div>
+</div>
+</div>
+</footer>
+<!-- SCANLINE EFFECT OVERLAY -->
+<div class="fixed inset-0 pointer-events-none opacity-20 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-[100] bg-[length:100%_4px,3px_100%]"></div>
+</body></html>
